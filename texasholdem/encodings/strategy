@@ -1,0 +1,4 @@
+
+comand(N,A) :- giocata(N), puntata(A) .
+
+
