@@ -157,8 +157,7 @@ public class BasicBot extends Bot {
 		encoding.addFilesPath(instanceResource);
 		handler.addProgram(encoding);
 		try {
-			ASPMapper.getInstance().registerClass(Comand.class);
-			
+			ASPMapper.getInstance().registerClass(Comand.class);	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -179,6 +178,18 @@ public class BasicBot extends Bot {
 		}
 		if(c.getGiocata().equals("check")) {
 			action = Action.CHECK;
+		}
+		else if(c.getGiocata().equals("fold")) {
+			action = Action.FOLD;
+		}
+		else if(c.getGiocata().equals("call")) {
+			action = Action.CALL;
+		}
+		else if(c.getGiocata().equals("raise")) {
+			action = new RaiseAction(c.getPuntata());
+		} 
+		else if (c.getGiocata().equals("bet")) {
+			action = new BetAction(c.getPuntata());
 		}
 		/*
         if (allowedActions.size() == 1) {

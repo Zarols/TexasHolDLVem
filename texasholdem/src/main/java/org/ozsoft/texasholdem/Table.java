@@ -356,6 +356,7 @@ public class Table {
                 Set<Action> allowedActions = getAllowedActions(actor);
                 action = actor.getClient().act(minBet, bet, allowedActions);
                 // Verify chosen action to guard against broken clients (accidental or on purpose).
+                /*
                 if (!allowedActions.contains(action)) {
                     if (action instanceof BetAction && !allowedActions.contains(Action.BET)) {
                         throw new IllegalStateException(String.format("Player '%s' acted with illegal Bet action", actor));
@@ -363,6 +364,7 @@ public class Table {
                         throw new IllegalStateException(String.format("Player '%s' acted with illegal Raise action", actor));
                     }
                 }
+                */
                 playersToAct--;
                 if (action == Action.CHECK) {
                     // Do nothing.

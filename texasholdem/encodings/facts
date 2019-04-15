@@ -1,2 +1,6 @@
-giocata(check).
-puntata(0).
+%giocata(check).
+giocata(fold).
+giocata(call).
+giocata(raise).
+giocata(bet).
+puntata(50).

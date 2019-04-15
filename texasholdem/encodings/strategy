@@ -1,4 +1,4 @@
 
-comand(N,A) :- giocata(N), puntata(A) .
-
+comand(N,A) | notComand(N,A) :- giocata(N), puntata(A) .
+:- comand(N,A), comand(X,Y), N != X, A != Y.
 
