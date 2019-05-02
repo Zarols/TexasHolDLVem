@@ -63,7 +63,7 @@ import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
  */
 public class BasicBot extends Bot {
     
-	private static String encodingResource="encodings/strategy";
+	private static String encodingResource="encodings/preflop";
 	
 	private static Handler handler;
 	
@@ -158,7 +158,7 @@ public class BasicBot extends Bot {
 		
 		try {
 			for(Action a : allowedActions) {
-				facts.addObjectInput(new AllowedComand(a.getName(),50));
+				facts.addObjectInput(new AllowedComand(a.getName()));
 			}
 			facts.addObjectInput(new Fiches(actor.getCash()));
 			facts.addObjectInput(new CardOfPlayer(actor.getCards()[0].getRank(),actor.getCards()[0].getSuit()));
@@ -192,6 +192,7 @@ public class BasicBot extends Bot {
 			} 
 			
 		}
+		System.out.println(c);
 		if(c.getGiocata().equals("\"check\"")) {
 			action = Action.CHECK;
 		}

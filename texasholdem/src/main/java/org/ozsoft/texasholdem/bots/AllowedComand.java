@@ -9,21 +9,18 @@ public class AllowedComand {
 	
 	@Param(0)
 	private String giocata;
-	@Param(1)
-	private int puntata;
 	
 	public AllowedComand() {
 		//
 	}
 	
-	public AllowedComand(String giocata, int puntata) {
+	public AllowedComand(String giocata) {
 		this.giocata = giocata.toLowerCase();
-		this.puntata = puntata;
 	}
 	
 	@Override
 	public String toString() {
-		return "AllowedComand [giocata=" + giocata + ", puntata=" + puntata + "]";
+		return "AllowedComand [giocata=" + giocata + "]";
 	}
 
 	public String getGiocata() {
@@ -32,19 +29,13 @@ public class AllowedComand {
 	public void setGiocata(String giocata) {
 		this.giocata = giocata;
 	}
-	public int getPuntata() {
-		return puntata;
-	}
-	public void setPuntata(int puntata) {
-		this.puntata = puntata;
-	}
+	
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((giocata == null) ? 0 : giocata.hashCode());
-		result = prime * result + puntata;
 		return result;
 	}
 
@@ -61,8 +52,6 @@ public class AllowedComand {
 			if (other.giocata != null)
 				return false;
 		} else if (!giocata.equals(other.giocata))
-			return false;
-		if (puntata != other.puntata)
 			return false;
 		return true;
 	}
