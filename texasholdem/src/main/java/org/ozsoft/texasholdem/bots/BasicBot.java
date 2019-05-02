@@ -17,6 +17,7 @@
 
 package org.ozsoft.texasholdem.bots;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +26,6 @@ import org.ozsoft.texasholdem.Player;
 import org.ozsoft.texasholdem.TableType;
 import org.ozsoft.texasholdem.actions.Action;
 import org.ozsoft.texasholdem.actions.BetAction;
-import org.ozsoft.texasholdem.actions.Comand;
 import org.ozsoft.texasholdem.actions.RaiseAction;
 import org.ozsoft.texasholdem.util.PokerUtils;
 
@@ -64,7 +64,6 @@ import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
 public class BasicBot extends Bot {
     
 	private static String encodingResource="encodings/strategy";
-	private static String instanceResource="encodings/facts";
 	
 	private static Handler handler;
 	
@@ -148,14 +147,31 @@ public class BasicBot extends Bot {
 
     /** {@inheritDoc} */
     @Override
-    public Action act(int minBet, int currentBet, Set<Action> allowedActions) {
+    public Action act(int minBet, int currentBet, Set<Action> allowedActions,Player actor,List<Card> board) {
     	Comand c = null;
     	Action action = null;
     	handler = new DesktopHandler(new DLVDesktopService("lib/dlv.mingw.exe"));
-		InputProgram encoding= new ASPInputProgram();
-		encoding.addFilesPath(encodingResource);
-		encoding.addFilesPath(instanceResource);
-		handler.addProgram(encoding);
+		InputProgram facts= new ASPInputProgram();
+
+		
+		//qui vanno aggiunti i fatti ovvero le azioni permesse che sono i command , le carte del player e le carte sul tavolo
+		
+		try {
+			for(Action a : allowedActions) {
+				facts.addObjectInput(new AllowedComand(a.getName(),50));
+			}
+			facts.addObjectInput(new Fiches(actor.getCash()));
+			facts.addObjectInput(new CardOfPlayer(actor.getCards()[0].getRank(),actor.getCards()[0].getSuit()));
+			facts.addObjectInput(new CardOfPlayer(actor.getCards()[1].getRank(),actor.getCards()[1].getSuit()));
+			for(Card cardontable : board) {
+				facts.addObjectInput(new CardOnTable(cardontable.getRank(),cardontable.getSuit()));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		facts.addFilesPath(encodingResource);
+		handler.addProgram(facts);
 		try {
 			ASPMapper.getInstance().registerClass(Comand.class);	
 		} catch (Exception e) {
@@ -176,19 +192,19 @@ public class BasicBot extends Bot {
 			} 
 			
 		}
-		if(c.getGiocata().equals("check")) {
+		if(c.getGiocata().equals("\"check\"")) {
 			action = Action.CHECK;
 		}
-		else if(c.getGiocata().equals("fold")) {
+		else if(c.getGiocata().equals("\"fold\"")) {
 			action = Action.FOLD;
 		}
-		else if(c.getGiocata().equals("call")) {
+		else if(c.getGiocata().equals("\"call\"")) {
 			action = Action.CALL;
 		}
-		else if(c.getGiocata().equals("raise")) {
+		else if(c.getGiocata().equals("\"raise\"")) {
 			action = new RaiseAction(c.getPuntata());
 		} 
-		else if (c.getGiocata().equals("bet")) {
+		else if (c.getGiocata().equals("\"bet\"")) {
 			action = new BetAction(c.getPuntata());
 		}
 		/*

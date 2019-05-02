@@ -21,6 +21,9 @@ import java.util.List;
 
 import org.ozsoft.texasholdem.actions.Action;
 
+import it.unical.mat.embasp.languages.Id;
+import it.unical.mat.embasp.languages.Param;
+
 /**
  * A Texas Hold'em player. <br />
  * <br />

@@ -7,7 +7,7 @@
     <artifactId>TexasHoldEm</artifactId>
     <version>0.5</version>
     <packaging>jar</packaging>
-
+    
     <name>TexasHoldEm</name>
     <description>Texas Hold'em poker game</description>
     <inceptionYear>2009</inceptionYear>

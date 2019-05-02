@@ -354,7 +354,7 @@ public class Table {
             } else {
                 // Otherwise allow client to act.
                 Set<Action> allowedActions = getAllowedActions(actor);
-                action = actor.getClient().act(minBet, bet, allowedActions);
+                action = actor.getClient().act(minBet, bet, allowedActions,actor,board);
                 // Verify chosen action to guard against broken clients (accidental or on purpose).
                 /*
                 if (!allowedActions.contains(action)) {
@@ -378,9 +378,9 @@ public class Table {
                     contributePot(betIncrement);
                 } else if (action instanceof BetAction) {
                     int amount = (tableType == TableType.FIXED_LIMIT) ? minBet : action.getAmount();
-                    if (amount < minBet && amount < actor.getCash()) {
+                   /* if (amount < minBet && amount < actor.getCash()) {
                         throw new IllegalStateException("Illegal client action: bet less than minimum bet!");
-                    }
+                    }*/
                     actor.setBet(amount);
                     actor.payCash(amount);
                     contributePot(amount);
