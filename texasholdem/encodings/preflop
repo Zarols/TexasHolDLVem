@@ -1,15 +1,32 @@
-comand(N,A) | notComand(N,A) :- action(N,A), allowedcomand(N).
-:- comand(N,A), comand(N2,A2), N != N2, A != A2.
-action(check,0).
-action(call,0).
-action(fold,0).
-action(raise,X):- rilancio(X,Y),level(Y).
+action("check",0).
+action("call",0).
+action("fold",0).
+action("raise",50).
 rilancio(100,2).
 rilancio(50,1).
-level(2):-cardofplayer(12,X),cardofplayer(12,Y),X!=Y.
-level(2):-cardofplayer(11,X),cardofplayer(11,Y),X!=Y.
-level(1):-cardofplayer(10,X),cardofplayer(10,Y),X!=Y.
-level(1):-cardofplayer(9,X),cardofplayer(9,Y),X!=Y.
-level(1):-cardofplayer(X,C),cardofplayer(Y,C),X=Y.
-:~level(2),comand(fold,0). [1@1]
-:~level(1),comand(fold,0). [1@1]
+
+comand(N,A) | notComand(N,A) :- action(N,A), allowedcomand(N).
+:- comand(N,A), comand(N2,A2), N != N2, A != A2.
+
+%:- comand("check",_), cardofplayer(X,Y),cardofplayer(X,Y1).
+%:- comand("check",_), carofplayer(13,_).
+%:- comand("check",_), carofplayer(12,_).
+%:- comand("check",_), carofplayer(11,_).
+%:- comand("check",_), carofplayer(10,_).
+%:- comand("fold",_), cardofplayer(X,Y),cardofplayer(X,Y1).
+%:- comand("fold",_), carofplayer(13,_).
+%:- comand("fold",_), carofplayer(12,_).
+%:- comand("fold",_), carofplayer(11,_).
+%:- comand("fold",_), carofplayer(10,_).
+
+
+%:- rilancio(X,Y),level(1).
+
+
+%level(2):-cardofplayer(12,X),cardofplayer(12,Y),X!=Y.
+%level(2):-cardofplayer(11,X),cardofplayer(11,Y),X!=Y.
+%level(1):-cardofplayer(10,X),cardofplayer(10,Y),X!=Y.
+%level(1):-cardofplayer(9,X),cardofplayer(9,Y),X!=Y.
+%level(1):-cardofplayer(X,C),cardofplayer(Y,C),X=Y.
+%:~level(2),comand(fold,0). [1@1]
+%:~level(1),comand(fold,0). [1@1]

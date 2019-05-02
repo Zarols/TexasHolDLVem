@@ -192,7 +192,6 @@ public class BasicBot extends Bot {
 			} 
 			
 		}
-		System.out.println(c);
 		if(c.getGiocata().equals("\"check\"")) {
 			action = Action.CHECK;
 		}
