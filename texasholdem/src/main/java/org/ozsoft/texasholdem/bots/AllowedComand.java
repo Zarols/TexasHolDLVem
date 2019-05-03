@@ -15,7 +15,10 @@ public class AllowedComand {
 	}
 	
 	public AllowedComand(String giocata) {
-		this.giocata = giocata.toLowerCase();
+		if((giocata.toLowerCase().equals("bet")))
+				this.giocata="raise";
+		else
+			this.giocata = giocata.toLowerCase();
 	}
 	
 	@Override

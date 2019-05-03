@@ -2,31 +2,33 @@ action("check",0).
 action("call",0).
 action("fold",0).
 action("raise",50).
-rilancio(100,2).
-rilancio(50,1).
 
 comand(N,A) | notComand(N,A) :- action(N,A), allowedcomand(N).
 :- comand(N,A), comand(N2,A2), N != N2, A != A2.
 
-%:- comand("check",_), cardofplayer(X,Y),cardofplayer(X,Y1).
-%:- comand("check",_), carofplayer(13,_).
-%:- comand("check",_), carofplayer(12,_).
-%:- comand("check",_), carofplayer(11,_).
-%:- comand("check",_), carofplayer(10,_).
-%:- comand("fold",_), cardofplayer(X,Y),cardofplayer(X,Y1).
-%:- comand("fold",_), carofplayer(13,_).
-%:- comand("fold",_), carofplayer(12,_).
-%:- comand("fold",_), carofplayer(11,_).
-%:- comand("fold",_), carofplayer(10,_).
+%%% NON FACCIO MAI FOLD SE POSSO FARE CHECK, ALTRIMENTI SONO SCEMO
+:- allowedcomand("check"), allowedcomand("fold"), comand("fold",_).
 
+%%% SE HO COPPIE AA,KK,QQ,JJ NEL PRE-FLOP SONO IL GIOCATORE PIU' FORTE
+%%% QUINDI L'UNICA MOSSA CHE NON POSSO FARE E' FOLD
+%%% SE HO ANCORA MOLTE FICHES E' MEGLIO FARE UN RILANCIO (da scrivere)
+level(3) :- cardofplayer(Y,X), cardofplayer(Y,X2), X!=X2, Y>8, Y<13.
+:- level(3), comand("fold",_).
+%:~ fiches(X), X>350, allowedcomand("raise"), comand("call",_). [1@1]
+%:~ fiches(X), X>350, allowedcomand("raise"), comand("check",_). [1@1]
 
-%:- rilancio(X,Y),level(1).
+%%% SE HO COPPIE DAL 10,10 FINO AL 2,2 OPPURE HO DUE CARTE DELLO STESSO SEME OPPURE HO DUE CARTE CON VALORI COMPRESI TRA A,K,Q,J,10,9
+%%% NEL PRE-FLOP SONO UN GIOCATORE NON TROPPO FORTE MA POSSO COMUNQUE SPERARE 
+%%% IN UN FLOP POSITIVO , QUINDI NON POSSO RILANCIARE,NEMMENO FOLDARE SE HO MOLTE FICHES
+%%% PREFERISCO FARE CALL (da scrivere)
+level(2) :- cardofplayer(Y,X), cardofplayer(Y,X2), X!=X2, Y>=0, Y<9.
+level(2) :- cardofplayer(Y,X), cardofplayer(Y2,X), Y!=Y2.
+level(2) :- cardofplayer(Y,X), cardofplayer(Y2,X2), Y!=Y2, X!=X2, Y>8, Y<13, Y2>8, Y2<13.
+:- level(2), comand("fold",_).
+:- level(2), comand("raise",_).
 
-
-%level(2):-cardofplayer(12,X),cardofplayer(12,Y),X!=Y.
-%level(2):-cardofplayer(11,X),cardofplayer(11,Y),X!=Y.
-%level(1):-cardofplayer(10,X),cardofplayer(10,Y),X!=Y.
-%level(1):-cardofplayer(9,X),cardofplayer(9,Y),X!=Y.
-%level(1):-cardofplayer(X,C),cardofplayer(Y,C),X=Y.
-%:~level(2),comand(fold,0). [1@1]
-%:~level(1),comand(fold,0). [1@1]
+%%% PER TUTTI GLI ALTRI ABBINAMENTI SONO UN GIOCATORE DI LIVELLO 1
+%%% OVVERO SE POSSO FACCIO CHECK ALTRIMENTI FOLD
+level(1) :- not level(2), not level(3).
+:- level(1), comand("raise",_).
+:- level(1), comand("call",_).
