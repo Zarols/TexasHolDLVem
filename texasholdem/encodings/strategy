@@ -1,4 +1,0 @@
-
-comand(N,A) | notComand(N,A) :- allowedcomand(N,A).
-:- comand(N,A), comand(X,Y), N != X, A != Y.
-

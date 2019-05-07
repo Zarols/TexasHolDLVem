@@ -63,7 +63,10 @@ import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
  */
 public class BasicBot extends Bot {
     
-	private static String encodingResource="encodings/preflop";
+	private static String encodingPreflop="encodings/preflop";
+	private static String encodingFlop="encodings/flop";
+	private static String encodingTurn="encodings/preflop";
+	private static String encodingRiver="encodings/preflop";
 	
 	private static Handler handler;
 	
@@ -170,7 +173,16 @@ public class BasicBot extends Bot {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		facts.addFilesPath(encodingResource);
+		System.out.println(board.size());
+		if(board.isEmpty())
+			facts.addFilesPath(encodingPreflop);
+		else if(board.size()==3)
+			facts.addFilesPath(encodingFlop);
+		else if(board.size()==4)
+			facts.addFilesPath(encodingTurn);
+		else
+			facts.addFilesPath(encodingRiver);
+			
 		handler.addProgram(facts);
 		try {
 			ASPMapper.getInstance().registerClass(Comand.class);	
