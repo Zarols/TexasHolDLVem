@@ -106,9 +106,10 @@ public interface Client {
      *            The current bet.
      * @param allowedActions
      *            The allowed actions.
+     * @param fichesToCall 
      * 
      * @return The selected action.
      */
-    Action act(int minBet, int currentBet, Set<Action> allowedActions,Player actor,List<Card> board);
+    Action act(int minBet, int currentBet, Set<Action> allowedActions,Player actor,List<Card> board, int fichesToCall);
 
 }

@@ -23,7 +23,7 @@ level(3) :- cardofplayer(Y2,_), cardofplayer(Y3,_), Y2 = 12, Y3 = 11.
 %%% NEL PRE-FLOP SONO UN GIOCATORE NON TROPPO FORTE MA POSSO COMUNQUE SPERARE 
 %%% IN UN FLOP POSITIVO , QUINDI NON POSSO RILANCIARE,NEMMENO FOLDARE
 level(2) :- cardofplayer(Y,X), cardofplayer(Y,X2), X!=X2, Y>=7, Y<10.
-level(2) :- cardofplayer(Y,X), cardofplayer(Y2,X2), Y!=Y2, X!=X2, Y>=7, Y<13, Y2>=7, Y2<13.
+level(2) :- cardofplayer(Y,X), cardofplayer(Y2,X2), Y!=Y2, Y>=7, Y<13, Y2>=7, Y2<13.
 level(2) :- cardofplayer(Y,_), cardofplayer(Y2,_), Y = 12, Y2 >= 8.
 :- level(2), comand("fold",_).
 :- level(2), comand("raise",_).

@@ -150,7 +150,7 @@ public class BasicBot extends Bot {
 
     /** {@inheritDoc} */
     @Override
-    public Action act(int minBet, int currentBet, Set<Action> allowedActions,Player actor,List<Card> board) {
+    public Action act(int minBet, int currentBet, Set<Action> allowedActions,Player actor,List<Card> board,int fichesToCall) {
     	Comand c = null;
     	Action action = null;
     	handler = new DesktopHandler(new DLVDesktopService("lib/dlv.mingw.exe"));

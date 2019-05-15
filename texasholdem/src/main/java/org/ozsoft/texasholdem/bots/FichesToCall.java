@@ -3,15 +3,15 @@ package org.ozsoft.texasholdem.bots;
 import it.unical.mat.embasp.languages.Id;
 import it.unical.mat.embasp.languages.Param;
 
-@Id("fiches")
-public class Fiches {
+@Id("fichesToCall")
+public class FichesToCall {
 	@Param(0)
 	private int amount;
 
-	public Fiches() {
+	public FichesToCall() {
 		
 	}
-	public Fiches(int amount) {
+	public FichesToCall(int amount) {
 		this.amount = amount;
 	}
 
@@ -39,7 +39,7 @@ public class Fiches {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Fiches other = (Fiches) obj;
+		FichesToCall other = (FichesToCall) obj;
 		if (amount != other.amount)
 			return false;
 		return true;
@@ -47,7 +47,7 @@ public class Fiches {
 
 	@Override
 	public String toString() {
-		return "Fiches [amount=" + amount + "]";
+		return "FichesToCall [amount=" + amount + "]";
 	}
 	
 	

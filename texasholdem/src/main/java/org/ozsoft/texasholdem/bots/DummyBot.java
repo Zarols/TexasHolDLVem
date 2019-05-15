@@ -79,7 +79,7 @@ public class DummyBot extends Bot {
 
     /** {@inheritDoc} */
     @Override
-    public Action act(int minBet, int currentBet, Set<Action> allowedActions,Player actor,List<Card> board) {
+    public Action act(int minBet, int currentBet, Set<Action> allowedActions,Player actor,List<Card> board,int fichesToCall) {
         if (allowedActions.contains(Action.CHECK)) {
             return Action.CHECK;
         } else {

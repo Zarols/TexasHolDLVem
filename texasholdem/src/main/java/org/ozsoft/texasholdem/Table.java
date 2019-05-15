@@ -354,7 +354,10 @@ public class Table {
             } else {
                 // Otherwise allow client to act.
                 Set<Action> allowedActions = getAllowedActions(actor);
-                action = actor.getClient().act(minBet, bet, allowedActions,actor,board);
+                
+                // bet - actor.getBet() è di quanto deve andare a fare call
+                int fichesToCall= bet - actor.getBet();
+                action = actor.getClient().act(minBet, bet, allowedActions,actor,board,fichesToCall);
                 // Verify chosen action to guard against broken clients (accidental or on purpose).
                 /*
                 if (!allowedActions.contains(action)) {
@@ -462,20 +465,20 @@ public class Table {
             int actorBet = actor.getBet();
             if (bet == 0) {
                 actions.add(Action.CHECK);
-                if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
+              //  if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
                     actions.add(Action.BET);
-                }
+              //  }
             } else {
                 if (actorBet < bet) {
                     actions.add(Action.CALL);
-                    if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
+               //     if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
                         actions.add(Action.RAISE);
-                    }
+                //    }
                 } else {
                     actions.add(Action.CHECK);
-                    if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
+                //    if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
                         actions.add(Action.RAISE);
-                    }
+                //    }
                 }
             }
             actions.add(Action.FOLD);

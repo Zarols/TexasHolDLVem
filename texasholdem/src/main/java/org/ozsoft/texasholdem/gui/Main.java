@@ -223,7 +223,7 @@ public class Main extends JFrame implements Client {
     }
 
     @Override
-    public Action act(int minBet, int currentBet, Set<Action> allowedActions,Player actor,List<Card> board) {
+    public Action act(int minBet, int currentBet, Set<Action> allowedActions,Player actor,List<Card> board,int fichesToCall) {
         boardPanel.setMessage("Please select an action:");
         return controlPanel.getUserInput(minBet, humanPlayer.getCash(), allowedActions);
     }
