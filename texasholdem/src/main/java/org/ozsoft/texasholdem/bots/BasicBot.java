@@ -169,6 +169,7 @@ public class BasicBot extends Bot {
 			for(Card cardontable : board) {
 				facts.addObjectInput(new CardOnTable(cardontable.getRank(),cardontable.getSuit()));
 			}
+			facts.addObjectInput(new FichesToCall(fichesToCall));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
