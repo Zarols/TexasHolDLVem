@@ -95,7 +95,7 @@ public class ControlPanel extends JPanel implements ActionListener {
             public void run() {
                 removeAll();
                 add(continueButton);
-                repaint();
+                paintAll(getGraphics());
             }
         });
         Set<Action> allowedActions = new HashSet<Action>();
@@ -127,27 +127,27 @@ public class ControlPanel extends JPanel implements ActionListener {
                     if (allowedActions.contains(Action.CONTINUE)) {
                         add(continueButton);
                     } else {
-                    	int i=0;
                         if (allowedActions.contains(Action.CHECK)) {
-                            add(checkButton,i++);
+                            add(checkButton);
                         }
                         if (allowedActions.contains(Action.CALL)) {
-                            add(callButton,i++);
+                            add(callButton);
                         }
                         if (allowedActions.contains(Action.BET)) {
-                            add(betButton,i++);
+                            add(betButton);
                         }
                         if (allowedActions.contains(Action.RAISE)) {
-                            add(raiseButton,i++);
+                            add(raiseButton);
                         }
                         if (allowedActions.contains(Action.FOLD)) {
-                            add(foldButton,i++);
+                            add(foldButton);
                         }
                     }
-                    repaint();
+                    //repaint();
+                    paintAll(getGraphics());
                 }
+                
             });
-            
             // Wait for the user to select an action.
             synchronized (monitor) {
                 try {
@@ -164,7 +164,7 @@ public class ControlPanel extends JPanel implements ActionListener {
                     public void run() {
                         removeAll();
                         add(amountPanel);
-                        repaint();
+                        paintAll(getGraphics());
                     }
                 });
                 selectedAction = amountPanel.show(selectedAction, minBet, cash);
