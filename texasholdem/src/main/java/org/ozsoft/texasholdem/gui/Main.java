@@ -158,6 +158,7 @@ public class Main extends JFrame implements Client {
      */
     public static void main(String[] args) {
         new Main();
+        //Menu menu = new Menu();
     }
 
     @Override
