@@ -9,8 +9,13 @@ public class MenuRefresh extends Thread{
 	}
 	
 	public void run() {
-		while(true) {
+		while(panel.menu.choiche==false) {
 		panel.repaint();
 		}
+		panel.menu.setVisible(false);
+		if(panel.cont==1)
+			new Main("PlayerVsDlv");
+		else
+			new Main("DlvVsDlv");
 	}
 }

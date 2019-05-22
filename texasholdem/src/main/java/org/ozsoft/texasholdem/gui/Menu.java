@@ -8,16 +8,18 @@ import javax.swing.JFrame;
 public class Menu extends JFrame{
 	
 	MenuPanel panel;
+	public static boolean choiche;
 	
 	public Menu() {
 		super();
-		this.panel = new MenuPanel();
+		choiche=false;
+		this.panel = new MenuPanel(this);
 		this.setContentPane(panel);
 		this.setVisible(true);
 		this.setSize(800,600);
 		this.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
-				System.out.println(e.getKeyCode());
+				//System.out.println(e.getKeyCode());
 				if(e.getKeyCode()==38 ||e.getKeyChar()=='w' ){
 					if(panel.cont > 1) {
 						panel.cont--;
@@ -29,13 +31,17 @@ public class Menu extends JFrame{
 					}
 				}
 				if(e.getKeyCode()==10) {
-					if(panel.cont == 1) {
-						new Main();
+					if(panel.cont == 1||panel.cont==2) {
+						choiche=true;
 					}
 				}
 				}
 		});
 	}
+	  public static void main(String[] args) {
+	    	Menu menu = new Menu();
+	        //new Main();
+	    }
 	/*
 	public void initListener() {
 		this.addKeyListener(new KeyAdapter(){

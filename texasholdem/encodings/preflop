@@ -4,7 +4,8 @@ action("fold",0).
 action("raise",50).
 
 comand(N,A) | notComand(N,A) :- action(N,A), allowedcomand(N).
-:- comand(N,A), comand(N2,A2), N != N2, A != A2.
+:- #count{N : comand(N,A)}>1.
+:- #count{N : comand(N,A)}<1.
 
 %%% NON FACCIO MAI FOLD SE POSSO FARE CHECK, ALTRIMENTI SONO SCEMO
 :- allowedcomand("check"), allowedcomand("fold"), comand("fold",_).

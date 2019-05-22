@@ -21,12 +21,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.SwingUtilities;
+
 import org.ozsoft.texasholdem.Card;
 import org.ozsoft.texasholdem.Player;
 import org.ozsoft.texasholdem.TableType;
 import org.ozsoft.texasholdem.actions.Action;
 import org.ozsoft.texasholdem.actions.BetAction;
 import org.ozsoft.texasholdem.actions.RaiseAction;
+import org.ozsoft.texasholdem.gui.ControlPanel;
+import org.ozsoft.texasholdem.gui.Main;
+import org.ozsoft.texasholdem.gui.PlayerPanel;
 import org.ozsoft.texasholdem.util.PokerUtils;
 
 import it.unical.mat.embasp.base.Handler;
@@ -65,7 +71,7 @@ public class BasicBot extends Bot {
     
 	private static String encodingPreflop="encodings/preflop";
 	private static String encodingFlop="encodings/flop";
-	private static String encodingTurn="encodings/preflop";
+	private static String encodingTurn="encodings/turn";
 	private static String encodingRiver="encodings/preflop";
 	
 	private static Handler handler;
@@ -84,6 +90,12 @@ public class BasicBot extends Bot {
     /** The hole cards. */
     private Card[] cards;
     
+    public Main main;
+	private Boolean visible;
+	private Boolean boss;
+    
+    
+    
     /**
      * Constructor.
      * 
@@ -94,6 +106,8 @@ public class BasicBot extends Bot {
      *            aggressive).
      */
     public BasicBot(int tightness, int aggression) {
+    	main=null;
+    	boss=false;
         if (tightness < 0 || tightness > 100) {
             throw new IllegalArgumentException("Invalid tightness setting");
         }
@@ -104,53 +118,135 @@ public class BasicBot extends Bot {
         this.aggression = aggression;
     }
 
-    /** {@inheritDoc} */
+    public BasicBot(int tightness, int aggression, Main main,Boolean boss) {
+    	 this.main=main;
+    	 this.boss=boss;
+    	 if (tightness < 0 || tightness > 100) {
+             throw new IllegalArgumentException("Invalid tightness setting");
+         }
+         if (aggression < 0 || aggression > 100) {
+             throw new IllegalArgumentException("Invalid aggression setting");
+         }
+         this.tightness = tightness;
+         this.aggression = aggression;
+	}
+
+	/** {@inheritDoc} */
     @Override
     public void joinedTable(TableType type, int bigBlind, List<Player> players) {
-        this.tableType = type;
+    	if(main!=null&&boss==true) {
+    		for (Player player : players) {
+                PlayerPanel playerPanel = main.playerPanels.get(player.getName());
+                if (playerPanel != null) {
+                    playerPanel.update(player);
+                }
+            }
+    	}
+    	else {
+    		this.tableType = type;
+    	}
     }
 
     /** {@inheritDoc} */
     @Override
     public void messageReceived(String message) {
-        // Not implemented.
+    	if(main!=null&&boss==true) {
+    	 main.boardPanel.setMessage(message);
+         main.boardPanel.waitForUserInput();
+    	}
     }
 
     /** {@inheritDoc} */
     @Override
     public void handStarted(Player dealer) {
-        cards = null;
+    	if(main!=null&&boss==true) {
+    	 main.setDealer(false);
+         main.dealerName = dealer.getName();
+         main.setDealer(true);
+    	}
+    	else
+    		cards = null;
     }
 
     /** {@inheritDoc} */
     @Override
     public void actorRotated(Player actor) {
-        // Not implemented.
+    	if(main!=null&&boss==true) {
+    	main.setActorInTurn(false);
+        main.actorName = actor.getName();
+        main.setActorInTurn(true);
+    	}
     }
 
     /** {@inheritDoc} */
     @Override
     public void boardUpdated(List<Card> cards, int bet, int pot) {
-        // Not implemented.
+    	if(main!=null)
+    	main.boardPanel.update(cards, bet, pot);
     }
 
     /** {@inheritDoc} */
     @Override
     public void playerUpdated(Player player) {
-        if (player.getCards().length == NO_OF_HOLE_CARDS) {
-            this.cards = player.getCards();
-        }
+    	if(main!=null&&boss==true) {
+    		PlayerPanel playerPanel = main.playerPanels.get(player.getName());
+            if (playerPanel != null) {
+                playerPanel.update(player);
+            }
+    	}
+    	else {
+	        if (player.getCards().length == NO_OF_HOLE_CARDS) {
+	            this.cards = player.getCards();
+	        }
+    	}
     }
 
     /** {@inheritDoc} */
     @Override
     public void playerActed(Player player) {
-        // Not implemented.
+    	if(main!=null&&boss==true) {
+    	 String name = player.getName();
+         PlayerPanel playerPanel = main.playerPanels.get(name);
+         if (playerPanel != null) {
+             playerPanel.update(player);
+             Action action = player.getAction();
+             if (action != null) {
+            	 main.boardPanel.setMessage(String.format("%s %s.", name, action.getVerb()));
+                 if (player.getClient() != this) {
+                	 main.boardPanel.waitForUserInput();
+                 }
+             }
+         } else {
+             throw new IllegalStateException(
+                     String.format("No PlayerPanel found for player '%s'", name));
+         }
+    	}
     }
 
     /** {@inheritDoc} */
     @Override
     public Action act(int minBet, int currentBet, Set<Action> allowedActions,Player actor,List<Card> board,int fichesToCall) {
+    	if(main!=null&&boss==true) {
+    		  SwingUtilities.invokeLater(new Runnable() {
+                  @Override
+                  public void run() {
+                	  main.controlPanel.removeAll();
+                      JButton continueButton = main.controlPanel.createActionButton(Action.CONTINUE);
+                      main.controlPanel.add(continueButton);
+                      //repaint();
+                      main.controlPanel.paintAll(main.controlPanel.getGraphics());
+                  }
+                  
+              });
+              // Wait for the user to select an action.
+              synchronized (main.controlPanel.monitor) {
+                  try {
+                	  main.controlPanel.monitor.wait();
+                  } catch (InterruptedException e) {
+                      // Ignore.
+                  }
+              }	
+    	}
     	Comand c = null;
     	Action action = null;
     	handler = new DesktopHandler(new DLVDesktopService("lib/dlv.mingw.exe"));

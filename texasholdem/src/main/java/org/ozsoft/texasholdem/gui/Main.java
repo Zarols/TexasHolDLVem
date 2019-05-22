@@ -67,27 +67,27 @@ public class Main extends JFrame implements Client {
     private final GridBagConstraints gc;
     
     /** The board panel. */
-    private final BoardPanel boardPanel;
+    public final BoardPanel boardPanel;
     
     /** The control panel. */
-    private final ControlPanel controlPanel;
+    public final ControlPanel controlPanel;
     
     /** The player panels. */
-    private final Map<String, PlayerPanel> playerPanels;
+    public final Map<String, PlayerPanel> playerPanels;
     
     /** The human player. */
     private final Player humanPlayer;
     
     /** The current dealer's name. */
-    private String dealerName; 
+    public String dealerName; 
 
     /** The current actor's name. */
-    private String actorName; 
+    public String actorName; 
 
     /**
      * Constructor.
      */
-    public Main() {
+    public Main(String typeOfMatch) {
         super("Texas Hold'em poker");
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,11 +102,20 @@ public class Main extends JFrame implements Client {
         addComponent(boardPanel, 1, 1, 1, 1);
         
         players = new LinkedHashMap<String, Player>();
-        humanPlayer = new Player("Player", STARTING_CASH, this);
-        players.put("Player", humanPlayer);
-        players.put("Joe",    new Player("Joe",   STARTING_CASH, new BasicBot(0, 75)));
-        players.put("Mike",   new Player("Mike",  STARTING_CASH, new BasicBot(25, 50)));
-        players.put("Eddie",  new Player("Eddie", STARTING_CASH, new BasicBot(50, 25)));
+        if(typeOfMatch.equals("PlayerVsDlv")) {
+        	humanPlayer = new Player("Player", STARTING_CASH, this);
+        	players.put("Player", humanPlayer);
+        	 players.put("Joe",    new Player("Joe",   STARTING_CASH, new BasicBot(0, 75)));
+             players.put("Mike",   new Player("Mike",  STARTING_CASH, new BasicBot(25, 50)));
+             players.put("Eddie",  new Player("Eddie", STARTING_CASH, new BasicBot(50, 25)));
+        }
+        else {
+        	humanPlayer = new Player("Jack",   STARTING_CASH, new BasicBot(0, 75,this,true));
+        	players.put("Jack", humanPlayer);
+        	 players.put("Joe",    new Player("Joe",   STARTING_CASH, new BasicBot(0, 75,this,false)));
+             players.put("Mike",   new Player("Mike",  STARTING_CASH, new BasicBot(25, 50,this,false)));
+             players.put("Eddie",  new Player("Eddie", STARTING_CASH, new BasicBot(50, 25,this,false)));
+        }
 
         table = new Table(TABLE_TYPE, BIG_BLIND);
         for (Player player : players.values()) {
@@ -156,10 +165,7 @@ public class Main extends JFrame implements Client {
      * @param args
      *            The command line arguments.
      */
-    public static void main(String[] args) {
-        new Main();
-        //Menu menu = new Menu();
-    }
+  
 
     @Override
     public void joinedTable(TableType type, int bigBlind, List<Player> players) {
@@ -261,7 +267,7 @@ public class Main extends JFrame implements Client {
      * @param isInTurn
      *            Whether the actor is in turn.
      */
-    private void setActorInTurn(boolean isInTurn) {
+    public void setActorInTurn(boolean isInTurn) {
         if (actorName != null) {
             PlayerPanel playerPanel = playerPanels.get(actorName);
             if (playerPanel != null) {
@@ -276,7 +282,7 @@ public class Main extends JFrame implements Client {
      * @param isDealer
      *            Whether the player is the dealer.
      */
-    private void setDealer(boolean isDealer) {
+    public void setDealer(boolean isDealer) {
         if (dealerName != null) {
             PlayerPanel playerPanel = playerPanels.get(dealerName);
             if (playerPanel != null) {

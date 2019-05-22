@@ -19,9 +19,11 @@ public class MenuPanel extends JPanel {
 	Image i3;
 	int cont = 1;	
 	MenuRefresh mr;
+	Menu menu;
 	
-	public MenuPanel() {
+	public MenuPanel(Menu menu) {
 		super();
+		this.menu=menu;
 		this.setVisible(true);
 		img1 = this.getClass().getResource("b1.png");
 		img2 = this.getClass().getResource("b2.png");

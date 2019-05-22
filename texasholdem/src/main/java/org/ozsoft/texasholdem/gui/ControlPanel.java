@@ -66,7 +66,7 @@ public class ControlPanel extends JPanel implements ActionListener {
     private final AmountPanel amountPanel;
 
     /** Monitor while waiting for user input. */
-    private final Object monitor = new Object();
+    public final Object monitor = new Object();
     
     /** The selected action. */
     private Action selectedAction;
@@ -215,7 +215,7 @@ public class ControlPanel extends JPanel implements ActionListener {
      * 
      * @return The button.
      */
-    private JButton createActionButton(Action action) {
+    public JButton createActionButton(Action action) {
         String label = action.getName();
         JButton button = new JButton(label);
         button.setMnemonic(label.charAt(0));
