@@ -1,7 +1,7 @@
 action("check",0).
 action("call",0).
 action("fold",0).
-action("raise",50).
+action("raise",X):-fichesToCall(Y), X= 50+Y.
 
 comand(N,A) | notComand(N,A) :- action(N,A), allowedcomand(N).
 :- #count{N : comand(N,A)}>1.
@@ -9,6 +9,7 @@ comand(N,A) | notComand(N,A) :- action(N,A), allowedcomand(N).
 
 %%% NON FACCIO MAI FOLD SE POSSO FARE CHECK, ALTRIMENTI SONO SCEMO
 :- allowedcomand("check"), allowedcomand("fold"), comand("fold",_).
+
 
 %%% SE HO COPPIE AA,KK,QQ OPPURE A,K NEL PRE-FLOP SONO IL GIOCATORE PIU' FORTE
 %%% QUINDI L'UNICA MOSSA CHE NON POSSO FARE E' FOLD
@@ -23,6 +24,7 @@ level(3) :- cardofplayer(Y2,_), cardofplayer(Y3,_), Y2 = 12, Y3 = 11.
 %%% OPPURE POTREI AVERE UN ASSO ACCOMPAGNATO DA UNA CARTA >= 10
 %%% NEL PRE-FLOP SONO UN GIOCATORE NON TROPPO FORTE MA POSSO COMUNQUE SPERARE 
 %%% IN UN FLOP POSITIVO , QUINDI NON POSSO RILANCIARE,NEMMENO FOLDARE
+level(2):-not level(3).
 level(2) :- cardofplayer(Y,X), cardofplayer(Y,X2), X!=X2, Y>=7, Y<10.
 level(2) :- cardofplayer(Y,X), cardofplayer(Y2,X2), Y!=Y2, Y>=7, Y<13, Y2>=7, Y2<13.
 level(2) :- cardofplayer(Y,_), cardofplayer(Y2,_), Y = 12, Y2 >= 8.

@@ -204,7 +204,35 @@ public class PlayerPanel extends JPanel {
             card2Label.setIcon(CARD_PLACEHOLDER_ICON);
         }
     }
-    
+    public void update(Player player,String s) {
+        nameLabel.setText(player.getName());
+        cashLabel.setText("$ " + player.getCash());
+        int bet = player.getBet();
+        if (bet == 0) {
+            betLabel.setText(" ");
+        } else {
+            betLabel.setText("$ " + bet);
+        }
+        Action action = player.getAction();
+        if (action != null) {
+            actionLabel.setText(action.getName());
+        } else {
+            actionLabel.setText(" ");
+        }
+        if (player.hasCards()) {
+            Card[] cards = player.getCards();
+            if (cards.length == 2) {
+                // Visible cards.
+                card1Label.setIcon(ResourceManager.getCardImage(cards[0]));
+                card2Label.setIcon(ResourceManager.getCardImage(cards[1]));
+            }
+        } else {
+            // No cards.
+            card1Label.setIcon(CARD_PLACEHOLDER_ICON);
+            card2Label.setIcon(CARD_PLACEHOLDER_ICON);
+        }
+    }
+
     /**
      * Sets whether the player is the dealer.
      * 

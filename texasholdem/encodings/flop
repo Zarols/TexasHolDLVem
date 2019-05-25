@@ -1,7 +1,7 @@
 action("check",0).
 action("call",0).
 action("fold",0).
-action("raise",50).
+action("raise",X):-fichesToCall(Y),X=50+Y.
 
 comand(N,A) | notComand(N,A) :- action(N,A), allowedcomand(N).
 :- #count{N : comand(N,A)}>1.
@@ -26,7 +26,7 @@ level(7) :- card(Y,X), card(Y2,X), card(Y3,X), card(Y4,X), card(Y5,X), Y!=Y2, Y!
 %%% SCALA (possiamo accorpare scala a colore con questa?penso di si)
 level(7) :- card(Y,_), card(Y2,_), card(Y3,_), card(Y4,_), card(Y5,_), Y5=Y4+1, Y4=Y3+1, Y3=Y2+1, Y2=Y+1.
 %%% TRIS
-level(7) :- cardofplayer(Y,X), cardontable(Y,X2), cardontable(Y,X3), X!=X2, X!=X3, X2!=X3.
+level(7) :- cardofplayer(Y,X), card(Y,X2), card(Y,X3), X!=X2, X!=X3, X2!=X3.
 %%% DOPPIA COPPIA
 level(7) :- cardofplayer(Y,X), cardofplayer(Y2,X3), cardontable(Y,X2), cardontable(Y2,X4), Y!=Y2, X!=X2, X3!=X4.
 
@@ -36,6 +36,7 @@ level(7) :- cardofplayer(Y,X), cardofplayer(Y2,X3), cardontable(Y,X2), cardontab
 
 %%% PUNTI FORTI(COPPIA ALTA)
 
+level(6):-not level(7).
 level(6):- cardofplayer(Y,X), cardontable(Y,X2), X!=X2, Y>=8, Y<13.
 level(6):- cardofplayer(Y,X), cardofplayer(Y,X2), X!=X2, Y>=8, Y<13.
 
@@ -47,6 +48,7 @@ level(6):- cardofplayer(Y,X), cardofplayer(Y,X2), X!=X2, Y>=8, Y<13.
 
 %%%MANI MARGINALI(COPPIA BASSA INFERIORE AL 10)
 
+level(5):-not level(7).
 level(5):- cardofplayer(Y,X), cardontable(Y,X2), X!=X2, Y<8, Y>=0.
 level(5):- cardofplayer(Y,X), cardofplayer(Y,X2), X!=X2, Y<8, Y>=0.
 

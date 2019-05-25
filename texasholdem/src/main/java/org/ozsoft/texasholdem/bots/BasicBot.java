@@ -33,7 +33,6 @@ import org.ozsoft.texasholdem.actions.RaiseAction;
 import org.ozsoft.texasholdem.gui.ControlPanel;
 import org.ozsoft.texasholdem.gui.Main;
 import org.ozsoft.texasholdem.gui.PlayerPanel;
-import org.ozsoft.texasholdem.util.PokerUtils;
 
 import it.unical.mat.embasp.base.Handler;
 import it.unical.mat.embasp.base.InputProgram;
@@ -134,17 +133,15 @@ public class BasicBot extends Bot {
 	/** {@inheritDoc} */
     @Override
     public void joinedTable(TableType type, int bigBlind, List<Player> players) {
-    	if(main!=null&&boss==true) {
+    	if(main!=null) {
     		for (Player player : players) {
                 PlayerPanel playerPanel = main.playerPanels.get(player.getName());
                 if (playerPanel != null) {
-                    playerPanel.update(player);
+                    playerPanel.update(player,"");
                 }
             }
     	}
-    	else {
     		this.tableType = type;
-    	}
     }
 
     /** {@inheritDoc} */
@@ -182,16 +179,16 @@ public class BasicBot extends Bot {
     @Override
     public void boardUpdated(List<Card> cards, int bet, int pot) {
     	if(main!=null)
-    	main.boardPanel.update(cards, bet, pot);
+    		main.boardPanel.update(cards, bet, pot);
     }
 
     /** {@inheritDoc} */
     @Override
     public void playerUpdated(Player player) {
-    	if(main!=null&&boss==true) {
+    	if(main!=null) {
     		PlayerPanel playerPanel = main.playerPanels.get(player.getName());
             if (playerPanel != null) {
-                playerPanel.update(player);
+                playerPanel.update(player,"");
             }
     	}
     	else {
@@ -208,7 +205,7 @@ public class BasicBot extends Bot {
     	 String name = player.getName();
          PlayerPanel playerPanel = main.playerPanels.get(name);
          if (playerPanel != null) {
-             playerPanel.update(player);
+             playerPanel.update(player,"");
              Action action = player.getAction();
              if (action != null) {
             	 main.boardPanel.setMessage(String.format("%s %s.", name, action.getVerb()));
@@ -316,81 +313,7 @@ public class BasicBot extends Bot {
 		else if (c.getGiocata().equals("\"bet\"")) {
 			action = new BetAction(c.getPuntata());
 		}
-		/*
-        if (allowedActions.size() == 1) {
-            // No choice, must check.
-            action = Action.CHECK;
-        } else {
-            double chenScore = PokerUtils.getChenScore(cards);
-            double chenScoreToPlay = tightness * 0.2;
-            if ((chenScore < chenScoreToPlay)) {
-                if (allowedActions.contains(Action.CHECK)) {
-                    // Always check for free if possible.
-                    action = Action.CHECK;
-                } else {
-                    // Bad hole cards; play tight.
-                    action = Action.FOLD;
-                }
-            } else {
-                // Good enough hole cards, play hand.
-                if ((chenScore - chenScoreToPlay) >= ((20.0 - chenScoreToPlay) / 2.0)) {
-                    // Very good hole cards; bet or raise!
-                    if (aggression == 0) {
-                        // Never bet.
-                        if (allowedActions.contains(Action.CALL)) {
-                            action = Action.CALL;
-                        } else {
-                            action = Action.CHECK;
-                        }
-                    } else if (aggression == 100) {
-                        // Always go all-in!
-                        //FIXME: Check and bet/raise player's remaining cash.
-                        int amount = (tableType == TableType.FIXED_LIMIT) ? minBet : 100 * minBet;
-                        if (allowedActions.contains(Action.BET)) {
-                            action = new BetAction(amount);
-                        } else if (allowedActions.contains(Action.RAISE)) {
-                            action = new RaiseAction(amount);
-                        } else if (allowedActions.contains(Action.CALL)) {
-                            action = Action.CALL;
-                        } else {
-                            action = Action.CHECK;
-                        }
-                    } else {
-                        int amount = minBet;
-                        if (tableType == TableType.NO_LIMIT) {
-                            int betLevel = aggression / 20;
-                            for (int i = 0; i < betLevel; i++) {
-                                amount *= 2;
-                            }
-                        }
-                        if (currentBet < amount) {
-                            if (allowedActions.contains(Action.BET)) {
-                                action = new BetAction(amount);
-                            } else if (allowedActions.contains(Action.RAISE)) {
-                                action = new RaiseAction(amount);
-                            } else if (allowedActions.contains(Action.CALL)) {
-                                action = Action.CALL;
-                            } else {
-                                action = Action.CHECK;
-                            }
-                        } else {
-                            if (allowedActions.contains(Action.CALL)) {
-                                action = Action.CALL;
-                            } else {
-                                action = Action.CHECK;
-                            }
-                        }
-                    }
-                } else {
-                    // Decent hole cards; check or call.
-                    if (allowedActions.contains(Action.CHECK)) {
-                        action = Action.CHECK;
-                    } else {
-                        action = Action.CALL;
-                    }
-                }
-            }
-        }*/
+		
         return action;
     }
     
