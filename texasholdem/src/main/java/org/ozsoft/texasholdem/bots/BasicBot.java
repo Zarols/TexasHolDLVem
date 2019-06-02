@@ -71,7 +71,7 @@ public class BasicBot extends Bot {
 	private static String encodingPreflop="encodings/preflop";
 	private static String encodingFlop="encodings/flop";
 	private static String encodingTurn="encodings/turn";
-	private static String encodingRiver="encodings/preflop";
+	private static String encodingRiver="encodings/river";
 	
 	private static Handler handler;
 	
