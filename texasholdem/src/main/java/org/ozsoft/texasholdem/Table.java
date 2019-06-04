@@ -393,9 +393,9 @@ public class Table {
                     playersToAct = activePlayers.size();
                 } else if (action instanceof RaiseAction) {
                     int amount = (tableType == TableType.FIXED_LIMIT) ? minBet : action.getAmount();
-                    if (amount < minBet && amount < actor.getCash()) {
-                        throw new IllegalStateException("Illegal client action: raise less than minimum bet!");
-                    }
+//                    if (amount < minBet && amount < actor.getCash()) {
+//                        throw new IllegalStateException("Illegal client action: raise less than minimum bet!");
+//                    }
                     bet += amount;
                     minBet = amount;
                     int betIncrement = bet - actor.getBet();

@@ -14,7 +14,7 @@ comand(N,A) | notComand(N,A) :- action(N,A), allowedcomand(N).
 %%% SE HO COPPIE AA,KK,QQ OPPURE A,K NEL PRE-FLOP SONO IL GIOCATORE PIU' FORTE
 %%% QUINDI L'UNICA MOSSA CHE NON POSSO FARE E' FOLD
 %%% SE HO ANCORA MOLTE FICHES E' MEGLIO FARE UN RILANCIO
-%level(3):-not level(2),not level(1),not level(0). 
+
 level(3) :- cardofplayer(Y,X), cardofplayer(Y,X2), X!=X2, Y>9, Y<13.
 level(3) :- cardofplayer(Y2,_), cardofplayer(Y3,_), Y2 = 12, Y3 = 11.
 :- level(3), comand("fold",_).
@@ -25,10 +25,10 @@ level(3) :- cardofplayer(Y2,_), cardofplayer(Y3,_), Y2 = 12, Y3 = 11.
 %%% OPPURE POTREI AVERE UN ASSO ACCOMPAGNATO DA UNA CARTA >= 10
 %%% NEL PRE-FLOP SONO UN GIOCATORE NON TROPPO FORTE MA POSSO COMUNQUE SPERARE 
 %%% IN UN FLOP POSITIVO , QUINDI NON POSSO RILANCIARE,NEMMENO FOLDARE
-%level(2):-not level(3),not level(1),not level(0). 
-level(2) :- cardofplayer(Y,X), cardofplayer(Y,X2), X!=X2, Y>=7, Y<10.
-level(2) :- cardofplayer(Y,X), cardofplayer(Y2,X2), Y!=Y2, Y>=7, Y<13, Y2>=7, Y2<13.
-level(2) :- cardofplayer(Y,_), cardofplayer(Y2,_), Y = 12, Y2 >= 8.
+
+level(2) :- cardofplayer(Y,X), cardofplayer(Y,X2), X!=X2, Y>=7, Y<10,not level(3).
+level(2) :- cardofplayer(Y,X), cardofplayer(Y2,X2), Y!=Y2, Y>=7, Y<13, Y2>=7, Y2<13,not level(3).
+level(2) :- cardofplayer(Y,_), cardofplayer(Y2,_), Y = 12, Y2 >= 8,not level(3).
 :~ level(2), comand("fold",_). [1:2]
 :- level(2), comand("raise",_).
 :- level(2), comand("call",_),fichesToCall(X),X>200.
@@ -37,11 +37,11 @@ level(2) :- cardofplayer(Y,_), cardofplayer(Y2,_), Y = 12, Y2 >= 8.
 %%% NEL FLOP PERCIO VA GIOCATA MODERATAMENTE CONSIDERANDO ANCHE LE FICHES(CONTROLLO SU FICHES COMMENTATO).
 %%% LO STESSO DISCORSO VALE SE HO DUE CARTE DELLO STESSO COLORE O DUE CARTE CHE FORMANO UN PRINCIPIO DI SCALA IN
 %%% QUANTO HANNO BISOGNO DI CENTRARE IL FLOP PER DIVENTARE UNA BUONA MANO.
-%level(1):-not level(2),not level(3),not level(0). 
-level(1) :- cardofplayer(Y,X), cardofplayer(Y,X2), Y < 7, X != X2.
-level(1) :- cardofplayer(Y,X), cardofplayer(Y2,X), Y!=Y2.
-level(1) :- cardofplayer(Y,_), cardofplayer(Y2,_), Y = Y2 + 1.
-%level(1) :- cardofplayer(Y,X), cardofplayer(Y2,X2), Y!=Y2, X!=X2, Y>=7, Y<13, Y2<7, Y2>=0.
+
+level(1) :- cardofplayer(Y,X), cardofplayer(Y,X2), Y < 7, X != X2,not level(2),not level(3).
+level(1) :- cardofplayer(Y,X), cardofplayer(Y2,X), Y!=Y2,not level(2),not level(3).
+level(1) :- cardofplayer(Y,_), cardofplayer(Y2,_), Y = Y2 + 1,not level(2),not level(3).
+%level(1) :- cardofplayer(Y,X), cardofplayer(Y2,X2), Y!=Y2, X!=X2, Y>=7, Y<13, Y2<7, Y2>=0,not level(2),not level(3).
 :- level(1), comand("raise",_).
 :- level(1), comand("call",_),fichesToCall(X),X>100.
 :~ level(1), comand("fold",_). [1:1]
