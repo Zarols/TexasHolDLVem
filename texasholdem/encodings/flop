@@ -49,7 +49,7 @@ level(6):- card(A,_), card(A2,_), card(A3,_), card(A4,_), A4=A3+1, A3=A2+1, A2=A
 level(6):- card(A,_), card(A2,_), card(A3,_), card(A4,_), A4=A3+2, A3=A2+1, A2=A+1, cardofplayer(X,_), cardontable(X,_),not level(7).
 
 
-:~ level(6), comand("raise",_). [4:6]
+:~ level(6), comand("raise",_). [1:6]
 :~ level(6), comand("call",_). [2:6]
 :~ level(6), comand("check",_). [2:6]
 :~ level(6), comand("fold",_). [3:6]

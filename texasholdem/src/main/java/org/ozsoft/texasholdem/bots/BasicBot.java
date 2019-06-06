@@ -208,10 +208,8 @@ public class BasicBot extends Bot {
              playerPanel.update(player,"");
              Action action = player.getAction();
              if (action != null) {
-            	 main.boardPanel.setMessage(String.format("%s %s.", name, action.getVerb()));
-                 if (player.getClient() != this) {
-                	 main.boardPanel.waitForUserInput();
-                 }
+            	main.boardPanel.setMessage(String.format("%s %s.", name, action.getVerb()));
+                main.boardPanel.waitForUserInput();
              }
          } else {
              throw new IllegalStateException(
@@ -298,6 +296,7 @@ public class BasicBot extends Bot {
 			} 
 			
 		}
+		if(allowedActions.size()!=1) {
 		if(c.getGiocata().equals("\"check\"")) {
 			action = Action.CHECK;
 		}
@@ -313,6 +312,9 @@ public class BasicBot extends Bot {
 		else if (c.getGiocata().equals("\"bet\"")) {
 			action = new BetAction(c.getPuntata());
 		}
+		}
+		else
+			action=allowedActions.iterator().next();
 		
         return action;
     }

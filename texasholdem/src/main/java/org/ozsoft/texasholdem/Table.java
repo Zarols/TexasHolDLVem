@@ -465,20 +465,20 @@ public class Table {
             int actorBet = actor.getBet();
             if (bet == 0) {
                 actions.add(Action.CHECK);
-              //  if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
+                if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
                     actions.add(Action.BET);
-              //  }
+                }
             } else {
                 if (actorBet < bet) {
                     actions.add(Action.CALL);
-               //     if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
+                    if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
                         actions.add(Action.RAISE);
-                //    }
+                    }
                 } else {
                     actions.add(Action.CHECK);
-                //    if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
+                    if (tableType == TableType.NO_LIMIT || raises < MAX_RAISES || activePlayers.size() == 2) {
                         actions.add(Action.RAISE);
-                //    }
+                   }
                 }
             }
             actions.add(Action.FOLD);
