@@ -93,6 +93,8 @@ public class BasicBot extends Bot {
 	private Boolean visible;
 	private Boolean boss;
     
+	private String lastPhase;
+	private int numberOfRaise;
     
     
     /**
@@ -107,6 +109,8 @@ public class BasicBot extends Bot {
     public BasicBot(int tightness, int aggression) {
     	main=null;
     	boss=false;
+    	lastPhase="";
+    	numberOfRaise=0;
         if (tightness < 0 || tightness > 100) {
             throw new IllegalArgumentException("Invalid tightness setting");
         }
@@ -120,6 +124,8 @@ public class BasicBot extends Bot {
     public BasicBot(int tightness, int aggression, Main main,Boolean boss) {
     	 this.main=main;
     	 this.boss=boss;
+    	 lastPhase="";
+    	 numberOfRaise=0;
     	 if (tightness < 0 || tightness > 100) {
              throw new IllegalArgumentException("Invalid tightness setting");
          }
@@ -249,7 +255,12 @@ public class BasicBot extends Bot {
 
 		
 		//qui vanno aggiunti i fatti ovvero le azioni permesse che sono i command , le carte del player e le carte sul tavolo
-		
+		if(numberOfRaise==3) {
+			numberOfRaise=0;
+			allowedActions.remove(Action.BET);
+			allowedActions.remove(Action.RAISE);
+			
+		}
 		try {
 			for(Action a : allowedActions) {
 				facts.addObjectInput(new AllowedComand(a.getName()));
@@ -266,14 +277,34 @@ public class BasicBot extends Bot {
 			e.printStackTrace();
 		}
 		System.out.println(board.size());
-		if(board.isEmpty())
+		if(board.isEmpty()) {
+			if(lastPhase.equals("river")) {
+				numberOfRaise=0;
+			}
+			lastPhase="preflop";
 			facts.addFilesPath(encodingPreflop);
-		else if(board.size()==3)
+		}
+		else if(board.size()==3) {
+			if(lastPhase.equals("preflop")) {
+				numberOfRaise=0;
+			}
+			lastPhase="flop";
 			facts.addFilesPath(encodingFlop);
-		else if(board.size()==4)
+		}
+		else if(board.size()==4) {
+			if(lastPhase.equals("flop")) {
+				numberOfRaise=0;
+			}
+			lastPhase="turn";
 			facts.addFilesPath(encodingTurn);
-		else
+		}
+		else {
+			if(lastPhase.equals("turn")) {
+				numberOfRaise=0;
+			}
+			lastPhase="river";
 			facts.addFilesPath(encodingRiver);
+		}
 			
 		handler.addProgram(facts);
 		try {
@@ -307,9 +338,11 @@ public class BasicBot extends Bot {
 			action = Action.CALL;
 		}
 		else if(c.getGiocata().equals("\"raise\"")) {
+			numberOfRaise++;
 			action = new RaiseAction(c.getPuntata());
 		} 
 		else if (c.getGiocata().equals("\"bet\"")) {
+			numberOfRaise++;
 			action = new BetAction(c.getPuntata());
 		}
 		}
