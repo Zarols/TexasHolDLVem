@@ -10,6 +10,12 @@ comand(N,A) | notComand(N,A) :- action(N,A), allowedcomand(N).
 %%% NON FACCIO MAI FOLD SE POSSO FARE CHECK, ALTRIMENTI SONO SCEMO
 :- allowedcomand("check"), allowedcomand("fold"), comand("fold",_).
 
+%%% SE MI SENTO UN P0' PAZZERELLO BLUFFO
+:~ bluff("yes"),allowedcomand("raise"),comand("call", _). [1:4]
+:~ bluff("yes"),allowedcomand("raise"),comand("check", _). [1:4]
+:~ bluff("yes"),allowedcomand("raise"),comand("fold", _). [1:4]
+
+
 
 %%% SE HO COPPIE AA,KK,QQ OPPURE A,K NEL PRE-FLOP SONO IL GIOCATORE PIU' FORTE
 %%% QUINDI L'UNICA MOSSA CHE NON POSSO FARE E' FOLD

@@ -272,6 +272,7 @@ public class BasicBot extends Bot {
 				facts.addObjectInput(new CardOnTable(cardontable.getRank(),cardontable.getSuit()));
 			}
 			facts.addObjectInput(new FichesToCall(fichesToCall));
+			facts.addObjectInput(new Bluff());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
